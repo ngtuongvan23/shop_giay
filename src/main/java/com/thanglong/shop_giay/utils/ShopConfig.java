@@ -13,8 +13,8 @@ public class ShopConfig {
 
     private ShopConfig(){
         this.shopName = "SHOP_GIAY";
-        this.defaultShippingFee = 30000; // 30k
-        this.vatRate = 0.08; // 8%
+        this.defaultShippingFee = 30000; 
+        this.vatRate = 0.08; 
         this.isMaintenanceMode = false;
     }
 

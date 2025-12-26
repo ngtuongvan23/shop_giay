@@ -115,11 +115,6 @@ public class Product {
             this.product.setStockQuantity(stockQuantity);
             return this;
         }
-        // Số lượng đã bán (mặc định là 0)
-        public ProductBuilder soldQuantity(Integer soldQuantity) {
-            this.product.setSoldQuantity(soldQuantity);
-            return this;
-        }
         public ProductBuilder description(String description) {
             this.product.setDescription(description);
             return this;
@@ -128,6 +123,7 @@ public class Product {
             this.product.setImageUrl(imageUrl);
             return this;
         }
+        
         // build
         public Product build(){
             return product;

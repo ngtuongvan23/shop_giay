@@ -16,10 +16,8 @@ import com.thanglong.shop_giay.utils.ShopConfig;
 @RequestMapping("/api/config")
 public class ConfigController {
 
-    // Khách hàng xem phí ship
     @GetMapping("/info")
     public ResponseEntity<Map<String, Object>> getShopInfo() {
-        // Gọi getInstance() để lấy cấu hình chung
         ShopConfig config = ShopConfig.getInstance();
         
         Map<String, Object> response = new LinkedHashMap<>(); // Dùng LinkedHashMap để giữ thứ tự dòng
@@ -31,7 +29,6 @@ public class ConfigController {
         return ResponseEntity.ok(response);
     }
 
-    // Admin đổi phí ship 
     @PostMapping("/update-vat/{vatNew}")
     public ResponseEntity<?> updateShipFee(@PathVariable float vatNew) {
         ShopConfig config = ShopConfig.getInstance();

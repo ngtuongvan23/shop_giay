@@ -14,7 +14,6 @@ public abstract class ContactProcessingTemplate {
     @Autowired
     protected ContactRepository contactRepository;
 
-    //Template handle contact 
     public final void processContact(ContactDTO dto){
         //step 1: Validate data
         validateContact(dto);

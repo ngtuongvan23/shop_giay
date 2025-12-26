@@ -9,8 +9,6 @@ import com.thanglong.shop_giay.entity.Contact;
 public class GuestContactProcessor extends ContactProcessingTemplate {
 
     // create Contact 
-    
-
     @Override
     protected boolean validateContact(ContactDTO dto) {
         System.out.println("GuestContactProcessor: Đang kiểm tra dữ liệu khách vãng lai...");

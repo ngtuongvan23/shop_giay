@@ -14,12 +14,10 @@ public class ProductDetail {
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
-    // Biến thể này là màu gì?
     @ManyToOne
     @JoinColumn(name = "color_id", nullable = false)
     private Color color;
 
-    // Biến thể này là size gì?
     @ManyToOne
     @JoinColumn(name = "size_id", nullable = false)
     private Size size;
@@ -31,7 +29,7 @@ public class ProductDetail {
     private Integer soldQuantity = 0;
 
     @Column(name = "image_url", columnDefinition = "TEXT")
-    private String imageUrl; // Ảnh riêng cho biến thể (VD: Giày màu đỏ ảnh khác giày xanh)
+    private String imageUrl; 
 
     // Setter and getter
     public Integer getId() {

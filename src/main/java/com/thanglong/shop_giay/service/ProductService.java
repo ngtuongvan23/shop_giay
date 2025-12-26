@@ -28,13 +28,12 @@ public class ProductService {
 
     //1. hàm create Product từ DTO
     public Product createProduct(@Valid ProductDTO dto){
-        // find obj category & brand (Tìm nguyên liệu phụ)
+        // find obj category & brand 
         Category category = categoryRepo.findById(dto.getCategoryId())
                             .orElseThrow(() -> new RuntimeException("Không tìm thấy Category với ID: " + dto.getCategoryId()));
         Brand brand = brandRepo.findById(dto.getBrandId())
                             .orElseThrow(() -> new RuntimeException("Không tìm thấy Brand với ID: " + dto.getBrandId()));
 
-        //builder(Lắp ráp)
         Product product = Product.builder()
                 .name(dto.getName())
                 .price(dto.getPrice())
@@ -43,7 +42,7 @@ public class ProductService {
                 .brand(brand)
                 .build();
                 
-        // save (Lưu kho)
+        // save 
         productRepo.save(product);
         return product;
     }
