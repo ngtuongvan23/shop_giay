@@ -8,8 +8,6 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 @Data
 public class UserDTO {
-	@NotNull(message = "UserName không được để trống")
-    private String username;
 
 	@NotNull(message = "PassWord không được để trống")
     private String password;

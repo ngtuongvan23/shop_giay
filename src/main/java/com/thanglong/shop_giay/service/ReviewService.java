@@ -33,7 +33,7 @@ public class ReviewService {
     @Autowired
     private UserService userService;
 
-    // 1. Lấy tất cả đánh giá (Dùng cho trang Admin quản lý)
+    // 1. Lấy tất cả đánh giá 
     public List<ReviewDTO> getAllReviews() {
         List<Review> reviews = reviewRepo.findAll();
         return reviews.stream()
@@ -41,7 +41,7 @@ public class ReviewService {
                 .collect(Collectors.toList());
     }
 
-    // 2. Lấy đánh giá theo Product ID (Dùng cho trang Chi tiết sản phẩm)
+    // 2. Lấy đánh giá theo Product ID 
     public List<ReviewDTO> getReviewsByProduct(Integer productId) {
         // Kiểm tra sản phẩm có tồn tại 
         if (productId == null) {
@@ -53,13 +53,13 @@ public class ReviewService {
         
         List<Review> reviews = reviewRepo.findByProductIdOrderByCreatedDateDesc(productId);
         return reviews.stream()
-                .map(this::mapToDTO)            // để chuyển sang DTO -> tăng bảo mật vì có User.
+                .map(this::mapToDTO)           
                 .collect(Collectors.toList());
     }
 
     // 3. Tạo đánh giá mới
     public ReviewDTO createReview(@Valid ReviewDTO dto) {
-        // Kiểm tra User có tồn tại không (Lưu ý: User ID là Long)
+        // Kiểm tra User có tồn tại không 
         User user = userService.getUserById(dto.getUserId());
 
         // Kiểm tra Product có tồn tại không
@@ -71,7 +71,6 @@ public class ReviewService {
         review.setProduct(product);
         review.setRating(dto.getRating());
         review.setComment(dto.getComment());
-        // createdDate sẽ tự sinh do @PrePersist trong Entity
 
         Review savedReview = reviewRepo.save(review);
         return mapToDTO(savedReview); // Trả về DTO đầy đủ thông tin
@@ -85,7 +84,7 @@ public class ReviewService {
         if (dto.getRating() != null) {
             review.setRating(dto.getRating());
         }
-        if (dto.getComment() != null && !dto.getComment().isEmpty()) { // vì là String nên cần check kĩ.
+        if (dto.getComment() != null && !dto.getComment().isEmpty()) { 
             review.setComment(dto.getComment());
         }
 
@@ -112,7 +111,6 @@ public class ReviewService {
         
         // Map thông tin User
         dto.setUserId(entity.getUser().getId());
-        dto.setUsername(entity.getUser().getUsername()); 
         
         // Map thông tin Product
         dto.setProductId(entity.getProduct().getId());

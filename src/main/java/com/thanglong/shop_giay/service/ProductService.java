@@ -1,7 +1,6 @@
 package com.thanglong.shop_giay.service;
 
 
-import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,7 +41,6 @@ public class ProductService {
                 .description(dto.getDescription())
                 .category(category)
                 .brand(brand)
-                .createdDate(LocalDateTime.now())
                 .build();
                 
         // save (Lưu kho)

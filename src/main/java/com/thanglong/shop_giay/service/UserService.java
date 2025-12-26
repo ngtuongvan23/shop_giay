@@ -35,9 +35,6 @@ public class UserService {
     public User createUser(@Valid UserDTO dto) throws Exception {
         
         // Kiểm tra 
-        if (userRepo.existsByUsername(dto.getUsername())) { 
-            throw new RuntimeException("Username '" + dto.getUsername() + "' đã tồn tại.");
-        } 
         if (userRepo.existsByPhoneNumber(dto.getPhoneNumber())) { 
             throw new RuntimeException("Số điện thoại " + dto.getPhoneNumber() + " đã được dùng.");
         } 
@@ -49,12 +46,12 @@ public class UserService {
         }
 
         User user = new User();
-        user.setUsername(dto.getUsername());
+
         // ???????????
-        
         String hashedPassword = BCrypt.hashpw(dto.getPassword(), BCrypt.gensalt());
+
         user.setPassword(hashedPassword);
-     
+        user.setBirthDate(dto.getBirthDate());
         user.setName(dto.getFullName());
         user.setEmail(dto.getEmail());
         user.setRole(dto.getRole());
@@ -69,9 +66,8 @@ public class UserService {
         // B1: Tìm user theo phoneNumber
         User user = userRepo.findByPhoneNumber(phoneNumber)
             .orElseThrow(() -> new RuntimeException("Bạn chưa đăng kí tài khoản với số điện thoại này hoặc sai số điện thoại."));
-
         
-        // B2: So sánh mật khẩu nhập vào (password) với mật khẩu mã hóa trong DB (user.getPassword())
+        // B2: So sánh mật khẩu nhập
         boolean checkPass = BCrypt.checkpw(password, user.getPassword());
 
         if (!checkPass) {
@@ -89,16 +85,12 @@ public class UserService {
     public User updateUser(Long id, UserDTO dto) {
         User existingUser = getUserById(id);
 
-        // Cập nhật thông tin
-        if (dto.getUsername() != null && !dto.getUsername().isEmpty()) {
-            // Kiểm tra: Nếu username mới KHÁC username cũ thì mới cần check trùng
-            if (!existingUser.getUsername().equals(dto.getUsername())) {
-                // Kiểm tra xem username mới đã có ai dùng chưa
-                if (userRepo.existsByUsername(dto.getUsername())) {
-                    throw new RuntimeException("Username " + dto.getUsername() + "' đã được sử dụng.");
+        if (dto.getPhoneNumber() != null && !dto.getPhoneNumber().isEmpty()) {
+            if (!existingUser.getPhoneNumber().equals(dto.getPhoneNumber())) {
+                if (userRepo.existsByPhoneNumber(dto.getPhoneNumber())) {
+                    throw new RuntimeException("PhoneNumber " + dto.getPhoneNumber() + "' đã được sử dụng.");
                 }
-                // Nếu chưa ai dùng thì mới cho đổi
-                existingUser.setUsername(dto.getUsername());
+                existingUser.setPhoneNumber(dto.getPhoneNumber());
             }
         }
 
@@ -121,11 +113,10 @@ public class UserService {
         return userRepo.save(existingUser);
     }
 
-    //6. Delete
-    // Thay vì xóa khỏi DB, ta chỉ set status về false
+    //6. Delete: chỉ đổi về false.
     public void deleteUser(Long id) {
         User existingUser = getUserById(id);
-        existingUser.setStatus(false); // Đánh dấu là đã xóa/vô hiệu hóa
+        existingUser.setStatus(false); 
         userRepo.save(existingUser);
     }
 

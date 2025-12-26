@@ -12,7 +12,9 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
+import lombok.Data;
 
+@Data
 @Entity
 @Table(name = "products")
 public class Product {
@@ -23,7 +25,6 @@ public class Product {
     @Column(name = "product_name", nullable = false)
     private String name;
 
-    // --- CÁC KHÓA NGOẠI (danh mục và thương hiệu) ---
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
@@ -31,7 +32,7 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "brand_id", nullable = false)
     private Brand brand;
-    // --- CÁC TRƯỜNG KHÁC ---
+
 
     @Column(length = 100)
     private String material;
@@ -60,94 +61,7 @@ public class Product {
             this.createdDate = LocalDateTime.now();
         }
     }
-    // Setter and getter
-    public Integer getId() {
-        return id;
-    }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Category getCategory() {
-        return category;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
-    }
-
-    public Brand getBrand() {
-        return brand;
-    }
-
-    public void setBrand(Brand brand) {
-        this.brand = brand;
-    }
-
-    public String getMaterial() {
-        return material;
-    }
-
-    public void setMaterial(String material) {
-        this.material = material;
-    }
-
-    public BigDecimal getPrice() {
-        return price;
-    }
-
-    public void setPrice(BigDecimal price) {
-        this.price = price;
-    }
-
-    public Integer getStockQuantity() {
-        return stockQuantity;
-    }
-
-    public void setStockQuantity(Integer stockQuantity) {
-        this.stockQuantity = stockQuantity;
-    }
-
-    public Integer getSoldQuantity() {
-        return soldQuantity;
-    }
-
-    public void setSoldQuantity(Integer soldQuantity) {
-        this.soldQuantity = soldQuantity;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
-    public LocalDateTime getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(LocalDateTime createdDate) {
-        this.createdDate = createdDate;
-    }
     //Contructor
     public Product() {
     }
@@ -201,7 +115,7 @@ public class Product {
             this.product.setStockQuantity(stockQuantity);
             return this;
         }
-        // Số lượng đã bán (Thường mặc định là 0, nhưng cứ để đây)
+        // Số lượng đã bán (mặc định là 0)
         public ProductBuilder soldQuantity(Integer soldQuantity) {
             this.product.setSoldQuantity(soldQuantity);
             return this;
@@ -212,11 +126,6 @@ public class Product {
         }
         public ProductBuilder imageUrl(String imageUrl) {
             this.product.setImageUrl(imageUrl);
-            return this;
-        }
-        //Ngày tạo (Thường tự động lấy ngày giờ hiện tại, nhưng cứ thêm cho đủ bộ)
-        public ProductBuilder createdDate(LocalDateTime createdDate) {
-            this.product.setCreatedDate(createdDate);
             return this;
         }
         // build

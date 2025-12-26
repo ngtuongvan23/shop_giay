@@ -14,9 +14,6 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id; 
 
-    @Column(name = "username", length = 100, unique = true, nullable = false)
-    private String username;
-
     @Column(name = "name")
     private String name;
 
@@ -53,9 +50,8 @@ public class User {
     public User() {}
 
     // Constructor có tham số (Tiện cho việc test)
-    public User(Long id, String username, String password, String email, String name) {
+    public User(Long id, String password, String email, String name) {
         this.id = id;
-        this.username = username;
         this.password = password;
         this.email = email;
         this.name = name;

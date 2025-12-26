@@ -54,7 +54,6 @@ public class UserController {
             User newUser = userService.createUser(dto);
             return ResponseEntity.ok(newUser);
         } catch (RuntimeException e) {
-            // Bắt lỗi trùng Username từ Service ném ra
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
@@ -68,7 +67,6 @@ public class UserController {
             // --- QUAN TRỌNG: XỬ LÝ DỮ LIỆU TRẢ VỀ ---
             Map<String, Object> response = new HashMap<>();
             response.put("id", user.getId());
-            response.put("username", user.getUsername());
             response.put("name", user.getName());
             response.put("role", user.getRole());
             response.put("phoneNumber", user.getPhoneNumber());
