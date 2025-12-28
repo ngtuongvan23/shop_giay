@@ -43,39 +43,39 @@ public class UserController {
             User user = userService.getUserById(id);
             return ResponseEntity.ok(user);
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", e.getMessage()));
         }
     }
 
     // 3. Tạo mới User ( đăng kí )
-    @PostMapping("/createUser")
+    @PostMapping("/register")
     public ResponseEntity<?> createUser(@Valid @RequestBody UserDTO dto) throws Exception {
         try {
             User newUser = userService.createUser(dto);
             return ResponseEntity.ok(newUser);
         } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.badRequest().body(Map.of("message", e.getMessage()));
         }
     }
     //4. Đăng nhập 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody UserDTO request) {
         try {
-            // Gọi hàm login bên Service 
-            User user = userService.login(request.getPhoneNumber(), request.getPassword());
+            
+            User user = userService.login(request.getUserName(), request.getPassword());
 
-            // --- QUAN TRỌNG: XỬ LÝ DỮ LIỆU TRẢ VỀ ---
+            //  Return đẹp hơn
             Map<String, Object> response = new HashMap<>();
             response.put("id", user.getId());
-            response.put("name", user.getName());
             response.put("role", user.getRole());
-            response.put("phoneNumber", user.getPhoneNumber());
+            response.put("userName", user.getUserName());
+            response.put("email", user.getEmail());
             response.put("message", "Đăng nhập thành công!");
 
             return ResponseEntity.ok(response);
 
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+            return ResponseEntity.badRequest().body(Map.of("message", e.getMessage()));
         }
     }
     // 5. Update User
@@ -85,8 +85,7 @@ public class UserController {
             User updatedUser = userService.updateUser(id, dto);
             return ResponseEntity.ok(updatedUser);
         } catch (RuntimeException e) {
-            // Bắt lỗi không tìm thấy user hoặc trùng username
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.badRequest().body(Map.of("message", e.getMessage()));
         }
     }
 
@@ -97,7 +96,7 @@ public class UserController {
             userService.deleteUser(id);
             return ResponseEntity.ok("Đã xóa thành công user có ID: " + id);
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", e.getMessage()));
         }
     }
 }

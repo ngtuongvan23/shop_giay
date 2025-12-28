@@ -13,9 +13,12 @@ public class User {
     @Column(name = "user_id", length = 50)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id; 
+    
+    @Column(name = "userName")
+    private String userName ;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "fullName")
+    private String fullName;
 
     @Column(name = "password", nullable = false)
     private String password;
@@ -35,9 +38,6 @@ public class User {
     @Column(name = "status")
     private boolean status; // trạng thái tài khoản 0 , 1 
 
-	@Column(name = "birth_date")
-    private LocalDate birthDate;
-
     // Tự động lấy ngày hiện tại khi tạo mới
 
     @PrePersist
@@ -49,12 +49,4 @@ public class User {
 
     public User() {}
 
-    // Constructor có tham số (Tiện cho việc test)
-    public User(Long id, String password, String email, String name) {
-        this.id = id;
-        this.password = password;
-        this.email = email;
-        this.name = name;
-    }
-    
 }

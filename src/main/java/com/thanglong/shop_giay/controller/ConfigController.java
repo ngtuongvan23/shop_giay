@@ -1,8 +1,5 @@
 package com.thanglong.shop_giay.controller;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,16 +14,9 @@ import com.thanglong.shop_giay.utils.ShopConfig;
 public class ConfigController {
 
     @GetMapping("/info")
-    public ResponseEntity<Map<String, Object>> getShopInfo() {
+    public ShopConfig getShopInfo() {
         ShopConfig config = ShopConfig.getInstance();
-        
-        Map<String, Object> response = new LinkedHashMap<>(); // Dùng LinkedHashMap để giữ thứ tự dòng
-        response.put("message", "Chào mừng đến " + config.getShopName());
-        response.put("shippingFee", config.getDefaultShippingFee());
-        response.put("vatRate", config.getVatRate());
-        response.put("isMaintenance", config.isMaintenanceMode() ? "Bảo trì " : "Hoạt động" );
-        
-        return ResponseEntity.ok(response);
+        return config;
     }
 
     @PostMapping("/update-vat/{vatNew}")
@@ -37,8 +27,7 @@ public class ConfigController {
         if (vatNew < 0 || vatNew > 1) {
             return ResponseEntity.badRequest().body("VAT phải từ 0 đến 1 (ví dụ 0.1 là 10%)");
         }
-        config.setVatRate(vatNew);
-        
+        config.setVatRate(vatNew); 
         return ResponseEntity.ok().body("Đã cập nhật VAT toàn hệ thống thành: " + vatNew);
     }
 }

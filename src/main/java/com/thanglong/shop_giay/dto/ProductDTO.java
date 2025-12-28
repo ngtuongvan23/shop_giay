@@ -21,6 +21,8 @@ public class ProductDTO {
 	@NotNull(message = "Brand ID của sản phẩm không được để trống")
     private Integer brandId;
 
+    private Integer quantity;
+
     
     
 }

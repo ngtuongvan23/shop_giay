@@ -33,16 +33,14 @@ public class UserService {
 
     // 3. Tạo mới User ( Đăng kí )
     public User createUser(@Valid UserDTO dto) throws Exception {
-        
-        // Kiểm tra 
-        if (userRepo.existsByPhoneNumber(dto.getPhoneNumber())) { 
-            throw new RuntimeException("Số điện thoại " + dto.getPhoneNumber() + " đã được dùng.");
-        } 
         if (userRepo.existsByEmail(dto.getEmail())) { 
              throw new RuntimeException("Email đã được sử dụng.");
         }
-        if (dto.getPassword().length() < 8) {
-            throw new RuntimeException("Mật khẩu quá ngắn! Phải từ 8 ký tự trở lên.");
+        if (userRepo.existsByUserName(dto.getUserName())) { 
+             throw new RuntimeException("UserName đã được sử dụng.");
+        }
+        if (dto.getPassword().length() < 5) {
+            throw new RuntimeException("Mật khẩu quá ngắn! Phải từ 5 ký tự trở lên.");
         }
 
         User user = new User();
@@ -51,21 +49,20 @@ public class UserService {
         String hashedPassword = BCrypt.hashpw(dto.getPassword(), BCrypt.gensalt());
 
         user.setPassword(hashedPassword);
-        user.setBirthDate(dto.getBirthDate());
-        user.setName(dto.getFullName());
+        user.setFullName(dto.getFullName());
+        user.setUserName(dto.getUserName());
         user.setEmail(dto.getEmail());
         user.setRole(dto.getRole());
-        user.setPhoneNumber(dto.getPhoneNumber());
-        user.setStatus(true); // mặc định là hoạt động 
+        user.setStatus(true); 
 
         return userRepo.save(user);
     }
 
     //4. Đăng nhập
-    public User login(String phoneNumber, String password) {
-        // B1: Tìm user theo phoneNumber
-        User user = userRepo.findByPhoneNumber(phoneNumber)
-            .orElseThrow(() -> new RuntimeException("Bạn chưa đăng kí tài khoản với số điện thoại này hoặc sai số điện thoại."));
+    public User login(String userName, String password) {
+        // B1: Tìm user theo userName
+        User user = userRepo.findByUserName(userName)
+            .orElseThrow(() -> new RuntimeException("Bạn chưa đăng kí tài khoản với userName này."));
         
         // B2: So sánh mật khẩu nhập
         boolean checkPass = BCrypt.checkpw(password, user.getPassword());
@@ -85,21 +82,21 @@ public class UserService {
     public User updateUser(Long id, UserDTO dto) {
         User existingUser = getUserById(id);
 
-        if (dto.getPhoneNumber() != null && !dto.getPhoneNumber().isEmpty()) {
-            if (!existingUser.getPhoneNumber().equals(dto.getPhoneNumber())) {
-                if (userRepo.existsByPhoneNumber(dto.getPhoneNumber())) {
-                    throw new RuntimeException("PhoneNumber " + dto.getPhoneNumber() + "' đã được sử dụng.");
+        if (dto.getUserName() != null && !dto.getUserName().isEmpty()) {
+            if (!existingUser.getPhoneNumber().equals(dto.getUserName())) {
+                if (userRepo.existsByPhoneNumber(dto.getUserName())) {
+                    throw new RuntimeException("userName " + dto.getUserName() + "' đã được sử dụng.");
                 }
-                existingUser.setPhoneNumber(dto.getPhoneNumber());
+                existingUser.setPhoneNumber(dto.getUserName());
             }
         }
 
         if (dto.getFullName() != null && !dto.getFullName().isEmpty()) {
-            existingUser.setName(dto.getFullName());
+            existingUser.setFullName(dto.getFullName());
         }
 
-        if (dto.getEmail() != null && !dto.getEmail().isEmpty()) {
-            existingUser.setEmail(dto.getEmail());
+        if (dto.getUserName() != null && !dto.getUserName().isEmpty()) {
+            existingUser.setEmail(dto.getUserName());
         }
         
         // Cập nhật mật khẩu 

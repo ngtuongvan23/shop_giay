@@ -123,14 +123,13 @@ public class Product {
             this.product.setImageUrl(imageUrl);
             return this;
         }
-        
+
         // build
         public Product build(){
             return product;
         }
     }
 
-    // hàm static để không cần tạo biến tạm lưu ProductBuilder 
     public static ProductBuilder builder() {
         return new ProductBuilder();
     }

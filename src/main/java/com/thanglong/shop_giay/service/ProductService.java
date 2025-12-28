@@ -40,6 +40,7 @@ public class ProductService {
                 .description(dto.getDescription())
                 .category(category)
                 .brand(brand)
+                .stockQuantity(dto.getQuantity())
                 .build();
                 
         // save 

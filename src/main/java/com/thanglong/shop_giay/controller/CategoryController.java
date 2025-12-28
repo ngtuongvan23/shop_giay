@@ -1,6 +1,7 @@
 package com.thanglong.shop_giay.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -46,7 +47,7 @@ public class CategoryController {
             Category category = categorySerive.getCategoryById(id);
             return ResponseEntity.ok(category);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", e.getMessage()));
         }
     }
     
@@ -57,7 +58,7 @@ public class CategoryController {
             Category category = categorySerive.updateById(id,dto);
             return ResponseEntity.ok(category);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.badRequest().body(Map.of("message", e.getMessage()));
         }
     }
 
@@ -68,11 +69,11 @@ public class CategoryController {
             String message = categorySerive.deleteById(id);
             return ResponseEntity.ok(message);
         }catch(DataIntegrityViolationException e){
-            return ResponseEntity.badRequest().body("Không xóa được vì có sản phẩm đang dùng.");
+            return ResponseEntity.badRequest().body(Map.of("message", "Không xóa được vì có sản phẩm đang dùng."));
         }catch(RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", e.getMessage()));
         }catch (Exception e){
-            return ResponseEntity.badRequest().body("Lỗi không xác định.");
+            return ResponseEntity.badRequest().body(Map.of("message","Lỗi không xác định."));
         }
     }
 

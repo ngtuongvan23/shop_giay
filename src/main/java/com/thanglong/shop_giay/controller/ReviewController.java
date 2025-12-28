@@ -1,6 +1,7 @@
 package com.thanglong.shop_giay.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -38,7 +39,7 @@ public class ReviewController {
                 List<ReviewDTO> list = reviewService.getReviewsByProduct(id);
                 return ResponseEntity.ok(list);
             } catch (Exception e) {
-               return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+               return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", e.getMessage()));
             }
         }
 
@@ -49,7 +50,7 @@ public class ReviewController {
                 ReviewDTO reviewDTO = reviewService.createReview(dto);
                 return ResponseEntity.ok(reviewDTO);
             } catch (Exception e) {
-               return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+               return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", e.getMessage()));
             }
         }
 
@@ -60,7 +61,7 @@ public class ReviewController {
                 ReviewDTO reviewDTO = reviewService.updateReview(id,dto);
                 return ResponseEntity.ok(reviewDTO);
             } catch (Exception e) {
-               return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+               return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", e.getMessage()));
             }
         }
         // 5. Xóa đánh giá
@@ -70,7 +71,7 @@ public class ReviewController {
                 reviewService.deleteReview(id);
                 return ResponseEntity.ok("Xoá thành công review id " + id);
             } catch (Exception e) {
-               return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+               return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", e.getMessage()));
             }
         }
 }
